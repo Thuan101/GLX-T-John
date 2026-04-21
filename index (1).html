@@ -10,9 +10,8 @@
             theme: {
                 extend: {
                     colors: {
-                        'neon-green': '#00ff41',
-                        'neon-blue': '#00d4ff',
-                        'orange-border': '#ff6b00'
+                        'neon-green': '#39ff14',
+                        'neon-orange': '#ff9500',
                     }
                 }
             }
@@ -20,237 +19,221 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        .neon-text {
+        body {
             font-family: 'Orbitron', monospace;
-            text-shadow: 0 0 5px #00d4ff, 0 0 10px #00d4ff, 0 0 15px #00d4ff;
+            background: linear-gradient(135deg, #000000 0%, #1a0000 50%, #000000 100%);
+            background-attachment: fixed;
         }
-        .gradient-bg {
-            background: linear-gradient(45deg, #000000 0%, #1a0000 50%, #000000 100%);
+        .glow-neon {
+            text-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14, 0 0 20px #39ff14;
         }
-        .border-orange {
-            box-shadow: 0 0 20px #ff6b00, inset 0 0 20px rgba(255,107,0,0.1);
-            border: 2px solid #ff6b00;
+        .border-neon-orange {
+            box-shadow: 0 0 20px #ff9500, inset 0 0 20px rgba(255,149,0,0.1);
         }
-        .glass-effect {
-            backdrop-filter: blur(10px);
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .rotate-spin {
+        .loading-spinner {
             animation: spin 1s linear infinite;
         }
         @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-        .pulse-neon {
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { text-shadow: 0 0 5px #00d4ff, 0 0 10px #00d4ff, 0 0 15px #00d4ff; }
-            50% { text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff, 0 0 30px #00d4ff; }
+        .iframe-container {
+            border: 2px solid #ff9500;
+            box-shadow: 0 0 30px rgba(255,149,0,0.5);
         }
     </style>
 </head>
-<body class="bg-gradient-bg min-h-screen text-white overflow-hidden font-sans">
-    <!-- HEADER -->
-    <header class="fixed top-0 left-0 right-0 z-50 border-b-2 border-orange-border glass-effect">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex items-center justify-between">
-                <h1 class="text-2xl md:text-3xl lg:text-4xl font-black neon-text pulse-neon tracking-wider">
-                    T JOHN AI
-                </h1>
-                <div class="flex items-center space-x-4">
-                    <!-- Status Bar -->
-                    <div id="statusBar" class="hidden flex items-center space-x-2 bg-black/50 px-4 py-2 rounded-lg border border-orange-border">
-                        <div id="statusIcon" class="w-5 h-5 border-2 border-white rounded-full"></div>
-                        <span id="statusText" class="text-sm font-mono">T John đang tạo...</span>
-                    </div>
-                    <!-- Sidebar Toggle -->
-                    <button id="sidebarToggle" class="w-10 h-10 bg-orange-500/20 hover:bg-orange-500/40 border-2 border-orange-border rounded-lg flex items-center justify-center transition-all duration-300">
-                        <span class="text-xl">☰</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- SIDEBAR -->
-    <div id="sidebar" class="fixed left-0 top-16 bottom-0 w-80 bg-black/90 border-r-2 border-orange-border glass-effect transform -translate-x-full transition-transform duration-300 z-40">
+<body class="min-h-screen text-white overflow-hidden">
+    <!-- Sidebar Menu -->
+    <div id="sidebar" class="fixed left-0 top-0 h-full w-80 bg-black/90 border-r-2 border-neon-orange z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
         <div class="p-6">
-            <h2 class="text-xl font-bold mb-8 text-neon-blue">T JOHN AI</h2>
+            <div class="flex items-center mb-8">
+                <button id="closeSidebar" class="text-2xl mr-4 hover:text-neon-green">×</button>
+                <h2 class="text-2xl font-bold glow-neon text-transparent bg-clip-text bg-gradient-to-r from-neon-green to-cyan-400">
+                    T JOHN AI
+                </h2>
+            </div>
             
-            <!-- Creator Info -->
-            <div class="mb-8 p-4 bg-orange-500/10 border border-orange-border rounded-lg">
-                <p class="text-sm font-mono text-orange-300">Nhà sáng lập T John AI:</p>
-                <p class="text-lg font-bold text-neon-green mt-1">T Thuận</p>
-            </div>
-
-            <!-- Chat Management -->
-            <div class="mb-8">
-                <h3 class="text-lg font-bold mb-4 text-neon-blue">Quản lý Chat</h3>
-                <div class="space-y-2">
-                    <button id="newChatBtn" class="w-full p-3 bg-green-500/20 hover:bg-green-500/40 border border-green-500 rounded-lg transition-all duration-300 text-left">
-                        <span class="font-bold">➕</span> Tạo Chat Mới
-                    </button>
-                    <select id="chatList" class="w-full p-3 bg-black/50 border border-orange-border rounded-lg text-sm">
-                        <option>Chat 1 - 21/04/2026</option>
-                        <option>Chat 2 - Dự án Web</option>
-                    </select>
+            <div class="space-y-4 mb-8">
+                <div class="p-3 bg-gray-900/50 rounded-lg border border-orange-500/50">
+                    <p class="text-sm text-gray-300 mb-1">👨‍💼 Nhà sáng lập</p>
+                    <p class="font-bold text-neon-green">T Thuận</p>
                 </div>
-            </div>
-
-            <!-- Theme Toggle -->
-            <div class="mb-8">
-                <h3 class="text-lg font-bold mb-4 text-neon-blue">Giao diện</h3>
-                <button id="themeToggle" class="w-full p-3 bg-blue-500/20 hover:bg-blue-500/40 border border-blue-500 rounded-lg transition-all duration-300 flex items-center justify-between">
-                    <span>🌙 Chế độ Tối</span>
-                    <span class="w-10 h-5 bg-gray-600 rounded-full relative">
-                        <span class="w-3 h-3 bg-white rounded-full absolute top-1 transition-all duration-300" id="themeSlider"></span>
-                    </span>
-                </button>
-            </div>
-
-            <!-- Admin Access -->
-            <div class="mb-8">
-                <h3 class="text-lg font-bold mb-4 text-neon-blue">Chế độ Nhà tạo lập</h3>
-                <div class="space-y-3">
-                    <input type="password" id="adminCode" placeholder="Nhập mã ADMIN..." 
-                           class="w-full p-3 bg-black/50 border-2 border-orange-border rounded-lg focus:border-neon-blue focus:outline-none transition-all duration-300">
-                    <button id="adminLoginBtn" class="w-full p-3 bg-red-500/30 hover:bg-red-500/50 border-2 border-red-400 rounded-lg font-bold transition-all duration-300">
-                        🚪 Truy cập Admin Vault
+                
+                <div class="space-y-2">
+                    <button id="newChat" class="w-full p-3 bg-gray-800 hover:bg-neon-green/20 border border-gray-600 rounded-lg transition-all duration-200 flex items-center justify-between">
+                        <span>📄 Tạo mới</span>
+                    </button>
+                    <button id="manageChats" class="w-full p-3 bg-gray-800 hover:bg-neon-green/20 border border-gray-600 rounded-lg transition-all duration-200 flex items-center justify-between">
+                        <span>📋 Quản lý Chat</span>
+                    </button>
+                </div>
+                
+                <div class="space-y-2">
+                    <button id="toggleTheme" class="w-full p-3 bg-gray-800 hover:bg-neon-green/20 border border-gray-600 rounded-lg transition-all duration-200">
+                        🌙 Chế độ Sáng/Tối
+                    </button>
+                    <button id="adminMode" class="w-full p-3 bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 border border-red-500 rounded-lg transition-all duration-200 font-bold">
+                        🔐 Chế độ Nhà tạo lập
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Overlay -->
-    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-30 hidden"></div>
+    <!-- Sidebar Toggle Button -->
+    <button id="openSidebar" class="fixed left-4 top-4 z-40 p-3 bg-black/80 border-2 border-neon-orange rounded-xl hover:bg-neon-orange/20 transition-all duration-200">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
 
-    <!-- MAIN CONTENT -->
-    <main class="pt-20 pb-24 px-4 md:px-8 lg:px-16 min-h-screen">
-        <!-- Messages Container -->
-        <div id="messagesContainer" class="h-[calc(100vh-200px)] md:h-[calc(100vh-220px)] overflow-y-auto mb-6 space-y-4 pb-4">
-            <!-- Messages will be dynamically added here -->
-            <div class="w-full text-center py-8 text-gray-400">
-                <div class="w-24 h-24 border-2 border-dashed border-gray-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <span class="text-2xl">💬</span>
+    <!-- Main Content -->
+    <div id="mainContent" class="ml-0 transition-all duration-300 h-screen overflow-hidden flex flex-col">
+        <!-- Header -->
+        <header class="bg-black/95 border-b-2 border-neon-orange p-4 flex items-center justify-between">
+            <div class="flex items-center">
+                <h1 class="text-3xl md:text-4xl font-black glow-neon text-transparent bg-clip-text bg-gradient-to-r from-neon-green via-cyan-400 to-blue-400 tracking-wider">
+                    T JOHN AI
+                </h1>
+            </div>
+            
+            <!-- Status Bar -->
+            <div id="statusBar" class="hidden px-4 py-2 bg-black/80 border border-neon-orange rounded-xl flex items-center space-x-3">
+                <div id="statusSpinner" class="w-6 h-6 border-2 border-white/30 border-t-white rounded-full loading-spinner"></div>
+                <span id="statusText" class="font-mono text-neon-green">T John đang tạo...</span>
+            </div>
+        </header>
+
+        <!-- Chat Messages Area -->
+        <div id="messagesContainer" class="flex-1 overflow-y-auto p-6 space-y-6 bg-black/50">
+            <div class="text-center py-12">
+                <div class="w-24 h-24 bg-gradient-to-r from-neon-green to-cyan-400 rounded-full mx-auto mb-6 flex items-center justify-center">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
                 </div>
-                <p>Bắt đầu trò chuyện với T John AI...</p>
+                <h2 class="text-2xl font-bold text-gray-300 mb-2">Chào mừng đến với T John AI</h2>
+                <p class="text-gray-400 max-w-md mx-auto">Gửi tin nhắn, tải file lên hoặc yêu cầu tạo nội dung. Tôi có thể xử lý mọi thứ!</p>
             </div>
         </div>
 
         <!-- Instant Sandbox -->
-        <div id="sandboxContainer" class="hidden mb-6 border-2 border-orange-border rounded-xl overflow-hidden bg-black">
-            <div class="p-4 bg-orange-500/20 border-b border-orange-border flex items-center justify-between">
-                <h3 class="font-bold text-lg">⚡ Instant Sandbox</h3>
-                <button id="closeSandbox" class="p-2 hover:bg-orange-500/40 rounded-lg transition-all duration-300">✕</button>
+        <div id="sandboxContainer" class="hidden bg-black/90 border-t-2 border-neon-orange p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold glow-neon text-transparent bg-clip-text bg-gradient-to-r from-neon-green to-cyan-400">⚡ Instant Sandbox</h3>
+                <button id="closeSandbox" class="p-2 hover:bg-red-600/50 rounded-lg transition-colors">×</button>
             </div>
-            <iframe id="sandboxFrame" class="w-full h-96 border-0 bg-black"></iframe>
+            <div class="iframe-container bg-black rounded-xl overflow-hidden h-96">
+                <iframe id="sandboxIframe" class="w-full h-full border-0"></iframe>
+            </div>
         </div>
 
         <!-- Input Bar -->
-        <div class="glass-effect border-2 border-orange-border rounded-2xl p-4 fixed bottom-6 left-4 right-4 md:left-20 md:right-8 lg:right-16 z-20">
-            <div class="max-w-4xl mx-auto flex items-end space-x-3">
+        <div class="bg-black/95 border-t-2 border-neon-orange p-6">
+            <div class="max-w-4xl mx-auto flex items-end space-x-4">
                 <!-- File Upload -->
-                <label class="w-12 h-12 bg-orange-500/20 hover:bg-orange-500/40 border-2 border-orange-border rounded-xl flex items-center justify-center cursor-pointer transition-all duration-300 group">
-                    <input type="file" id="fileUpload" class="hidden" multiple accept="*/*">
-                    <span class="text-xl group-hover:scale-110 transition-transform duration-300">+</span>
+                <label id="fileUpload" class="w-12 h-12 bg-gray-800 hover:bg-neon-green/30 border-2 border-gray-600 rounded-xl flex items-center justify-center cursor-pointer transition-all duration-200 hover:border-neon-green hover:scale-105">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    <input type="file" class="hidden" multiple accept="*/*">
                 </label>
 
                 <!-- Message Input -->
                 <div class="flex-1 relative">
-                    <textarea id="messageInput" rows="1" 
-                              placeholder="Nhập tin nhắn của bạn... (Tạo ảnh, tạo code, tạo video...)"
-                              class="w-full p-4 pr-20 bg-black/50 border border-orange-border rounded-xl resize-none focus:outline-none focus:border-neon-blue transition-all duration-300 text-base leading-relaxed max-h-32"></textarea>
-                    <button id="sendBtn" class="absolute right-2 bottom-2 p-2 bg-green-500 hover:bg-green-600 rounded-lg transition-all duration-300 font-bold">
+                    <input 
+                        id="messageInput" 
+                        type="text" 
+                        placeholder="Nhập tin nhắn của bạn... (Tạo ảnh, tạo code, tạo video...)"
+                        class="w-full p-4 pr-20 bg-gray-900/50 border-2 border-gray-600 rounded-2xl focus:border-neon-green focus:outline-none focus:ring-2 focus:ring-neon-green/50 transition-all duration-200 text-lg"
+                    >
+                    <button 
+                        id="sendButton" 
+                        class="absolute right-2 bottom-2 p-2 bg-neon-green hover:bg-neon-green/80 text-black font-bold rounded-xl transition-all duration-200"
+                    >
                         ▶️
                     </button>
                 </div>
 
                 <!-- Control Button -->
-                <div class="flex flex-col items-center space-y-1">
-                    <button id="controlBtn" class="w-14 h-14 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 border-3 border-white rounded-2xl flex items-center justify-center shadow-2xl transition-all duration-300 font-bold text-xl shadow-orange-500/50">
-                        <span id="controlIcon">⏹️</span>
+                <div class="flex flex-col items-center space-y-2">
+                    <button 
+                        id="controlButton" 
+                        class="w-14 h-14 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 border-4 border-neon-orange rounded-2xl flex items-center justify-center transition-all duration-200 shadow-2xl hover:scale-110 hover:shadow-neon-orange"
+                        title="AI Control"
+                    >
+                        <div id="controlIcon" class="loading-spinner w-6 h-6 border-2 border-white/30 border-t-white rounded-full"></div>
                     </button>
-                    <span class="text-xs text-gray-400 font-mono">AI Control</span>
+                    <span class="text-xs text-gray-400 text-center">AI Control</span>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- ADMIN VAULT MODAL -->
-    <div id="adminVault" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
-        <div class="w-full max-w-4xl max-h-[90vh] bg-gradient-bg border-4 border-orange-border rounded-3xl overflow-hidden shadow-2xl shadow-orange-500/50">
-            <!-- Admin Header -->
-            <div class="bg-orange-500/20 border-b-2 border-orange-border p-6">
-                <div class="flex items-center justify-between">
-                    <h2 class="text-3xl font-black neon-text">🔒 ADMIN VAULT - TUYỆT MẬT</h2>
-                    <button id="closeAdmin" class="w-12 h-12 bg-red-500/50 hover:bg-red-600 border-2 border-red-400 rounded-xl flex items-center justify-center text-2xl transition-all duration-300">✕</button>
+    <!-- Admin Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-black/90 z-[1000] hidden flex items-center justify-center p-6">
+        <div class="bg-black/95 border-2 border-neon-orange rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold glow-neon text-transparent bg-clip-text bg-gradient-to-r from-neon-green to-cyan-400">
+                    🔐 Admin Vault - Tuyệt mật
+                </h2>
+                <button id="closeAdminModal" class="text-2xl hover:text-red-400">×</button>
+            </div>
+            
+            <div id="adminLogin" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-neon-green">Nhập mã ADMIN:</label>
+                    <input id="adminCode" type="password" placeholder="ADMIN_T.JOHN.AI_Q.Thuan:7329000" 
+                           class="w-full p-4 bg-gray-900 border-2 border-gray-600 rounded-xl focus:border-neon-green focus:outline-none text-lg">
                 </div>
+                <button id="submitAdminCode" class="w-full p-4 bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 rounded-xl font-bold text-lg transition-all duration-200">
+                    Xác thực
+                </button>
             </div>
 
-            <!-- Admin Tabs -->
-            <div class="flex bg-black/50">
-                <button class="flex-1 p-4 font-bold border-b-4 border-orange-border hover:bg-orange-500/20 transition-all duration-300" data-tab="code">Code T John</button>
-                <button class="flex-1 p-4 font-bold hover:bg-orange-500/20 transition-all duration-300" data-tab="apis">Quản lý API</button>
-                <button class="flex-1 p-4 font-bold hover:bg-orange-500/20 transition-all duration-300" data-tab="logs">Lịch sử Log</button>
-                <button class="flex-1 p-4 font-bold hover:bg-orange-500/20 transition-all duration-300" data-tab="custom">Mã Tùy chỉnh</button>
-            </div>
-
-            <!-- Code Tab -->
-            <div id="tab-code" class="p-6 max-h-[60vh] overflow-auto tab-content">
-                <h3 class="text-2xl font-bold mb-6 text-neon-blue">Mã nguồn T John AI</h3>
-                <textarea readonly class="w-full h-96 bg-black/80 border-2 border-orange-border rounded-xl p-4 font-mono text-sm text-green-400" id="sourceCode">// TOÀN BỘ MÃ NGUỒN T JOHN AI ĐƯỢC TẢI TỪ INDEXEDDB
-// Hệ thống tự động sync với GitHub
-// Self-Healing: Tự sửa lỗi console.log
-// Full Power OS Version - T Thuận Creator</textarea>
-            </div>
-
-            <!-- API Tab -->
-            <div id="tab-apis" class="p-6 tab-content hidden">
-                <h3 class="text-2xl font-bold mb-6 text-neon-blue">Quản lý API Keys</h3>
+            <div id="adminPanel" class="hidden">
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <h3 class="font-bold text-lg mb-4 text-neon-green">⚙️ Quản lý API</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm mb-1">Jina Reader API Key</label>
+                                <input id="jinaKey" type="password" class="w-full p-3 bg-gray-900 border rounded-lg">
+                                <button class="mt-1 px-3 py-1 bg-green-600 text-xs rounded hover:bg-green-500">Lưu</button>
+                            </div>
+                            <div>
+                                <label class="block text-sm mb-1">Google Gemini API Key</label>
+                                <input id="geminiKey" type="password" class="w-full p-3 bg-gray-900 border rounded-lg">
+                                <button class="mt-1 px-3 py-1 bg-green-600 text-xs rounded hover:bg-green-500">Lưu</button>
+                            </div>
+                            <div>
+                                <label class="block text-sm mb-1">GitHub Token</label>
+                                <input id="githubToken" type="password" class="w-full p-3 bg-gray-900 border rounded-lg">
+                                <button class="mt-1 px-3 py-1 bg-green-600 text-xs rounded hover:bg-green-500">Lưu</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg mb-4 text-neon-green">📜 Nhật ký hệ thống</h3>
+                        <div id="adminLog" class="bg-gray-900 p-4 rounded-lg h-64 overflow-y-auto text-xs font-mono text-gray-300 border border-gray-700">
+                            Hệ thống khởi động... <br>
+                            Đợi truy cập Admin đầu tiên...
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-bold mb-2 text-orange-300">Jina Reader API Key</label>
-                        <input type="password" id="jinaKey" class="w-full p-3 bg-black/50 border-2 border-orange-border rounded-xl focus:border-neon-blue focus:outline-none">
-                        <button class="mt-2 px-4 py-2 bg-green-500 hover:bg-green-600 rounded-lg transition-all duration-300">💾 Lưu</button>
+                        <h3 class="font-bold text-lg mb-4 text-neon-green">💻 Code T John</h3>
+                        <textarea readonly class="w-full h-48 bg-gray-900 p-4 rounded-lg font-mono text-xs border border-gray-700" id="tjCode"></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold mb-2 text-orange-300">Google Gemini API Key</label>
-                        <input type="password" id="geminiKey" class="w-full p-3 bg-black/50 border-2 border-orange-border rounded-xl focus:border-neon-blue focus:outline-none">
-                        <button class="mt-2 px-4 py-2 bg-green-500 hover:bg-green-600 rounded-lg transition-all duration-300">💾 Lưu</button>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold mb-2 text-orange-300">GitHub Token</label>
-                        <input type="password" id="githubToken" class="w-full p-3 bg-black/50 border-2 border-orange-border rounded-xl focus:border-neon-blue focus:outline-none">
-                        <button class="mt-2 px-4 py-2 bg-green-500 hover:bg-green-600 rounded-lg transition-all duration-300">💾 Lưu & Sync</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Logs Tab -->
-            <div id="tab-logs" class="p-6 tab-content hidden">
-                <h3 class="text-2xl font-bold mb-6 text-neon-blue">Nhật ký hệ thống</h3>
-                <div id="logContent" class="bg-black/80 border-2 border-orange-border rounded-xl p-4 h-96 overflow-auto font-mono text-xs space-y-2">
-                    <div class="text-green-400">[21/04/2026 20:30] Hệ thống khởi động thành công</div>
-                    <div class="text-blue-400">[21/04/2026 20:31] Truy cập Admin: THÀNH CÔNG - ADMIN_T.JOHN.AI_Q.Thuan:7329000</div>
-                    <div class="text-orange-400">[21/04/2026 20:32] API Sync: GitHub commit thành công</div>
-                </div>
-            </div>
-
-            <!-- Custom Codes Tab -->
-            <div id="tab-custom" class="p-6 tab-content hidden">
-                <h3 class="text-2xl font-bold mb-6 text-neon-blue">Mã quản trị tùy chỉnh</h3>
-                <div class="space-y-4">
-                    <div class="bg-orange-500/10 p-4 rounded-xl border border-orange-border">
-                        <p class="font-bold mb-2">Mã hiện tại:</p>
-                        <code class="bg-black/50 px-3 py-1 rounded text-orange-300 font-mono">ADMIN_T.JOHN.AI_Q.Thuan:7329000</code>
-                    </div>
-                    <div>
-                        <input type="text" id="newAdminCode" placeholder="Thêm mã ADMIN mới..." class="w-full p-3 bg-black/50 border-2 border-orange-border rounded-xl">
-                        <button class="mt-3 w-full p-3 bg-purple-500 hover:bg-purple-600 rounded-xl font-bold transition-all duration-300">➕ Thêm mã mới</button>
+                        <h3 class="font-bold text-lg mb-4 text-neon-green">🔑 Mã quản trị</h3>
+                        <div class="flex space-x-2">
+                            <input id="currentAdminCode" type="text" readonly class="flex-1 bg-gray-900 p-3 rounded-lg border border-gray-700 font-mono">
+                            <button class="px-4 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg font-bold">Thêm mới</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -261,510 +244,89 @@
         class TJohnAI {
             constructor() {
                 this.db = null;
-                this.currentChatId = 'chat_1';
+                this.currentChatId = 'default';
                 this.isProcessing = false;
-                this.abortController = null;
+                this.adminAccess = false;
+                this.adminCode = 'ADMIN_T.JOHN.AI_Q.Thuan:7329000';
                 this.init();
             }
 
             async init() {
-                // Initialize IndexedDB
                 await this.initDB();
-                
-                // Load chat history
-                await this.loadChatHistory();
-                
-                // Event listeners
                 this.bindEvents();
-                
-                // Self-healing check
-                this.selfHealing();
-                
-                // Auto GitHub sync
-                setInterval(() => this.githubSync(), 300000); // 5 minutes
+                this.loadCurrentChat();
+                this.updateStatusBar(false);
             }
 
             async initDB() {
                 return new Promise((resolve) => {
-                    const request = indexedDB.open('TJohnAI_DB', 1);
-                    
-                    request.onerror = () => console.error('Database error');
-                    request.onsuccess = () => {
-                        this.db = request.result;
-                        resolve();
-                    };
+                    const request = indexedDB.open('TJohnAI', 1);
                     
                     request.onupgradeneeded = (e) => {
                         const db = e.target.result;
                         
+                        // Messages store
+                        if (!db.objectStoreNames.contains('messages')) {
+                            const msgStore = db.createObjectStore('messages', { keyPath: 'id' });
+                            msgStore.createIndex('chatId', 'chatId', { unique: false });
+                        }
+                        
                         // Chats store
                         if (!db.objectStoreNames.contains('chats')) {
-                            db.createObjectStore('chats', { keyPath: 'id' });
+                            db.createObjectStore('chats', { keyPath: 'id', autoIncrement: true });
                         }
                         
-                        // Logs store
-                        if (!db.objectStoreNames.contains('logs')) {
-                            const logStore = db.createObjectStore('logs', { keyPath: 'id', autoIncrement: true });
-                            logStore.createIndex('timestamp', 'timestamp', { unique: false });
-                        }
-                        
-                        // Settings store (encrypted)
+                        // Settings store
                         if (!db.objectStoreNames.contains('settings')) {
-                            db.createObjectStore('settings', { keyPath: 'key' });
+                            const settingsStore = db.createObjectStore('settings', { keyPath: 'key' });
                         }
                         
-                        // Admin codes store (encrypted)
-                        if (!db.objectStoreNames.contains('admin_codes')) {
-                            db.createObjectStore('admin_codes', { keyPath: 'code' });
+                        // Admin log store
+                        if (!db.objectStoreNames.contains('adminLog')) {
+                            const logStore = db.createObjectStore('adminLog', { keyPath: 'id', autoIncrement: true });
                         }
+                    };
+                    
+                    request.onsuccess = (e) => {
+                        this.db = e.target.result;
+                        resolve();
                     };
                 });
             }
 
             bindEvents() {
-                // Sidebar toggle
-                document.getElementById('sidebarToggle').addEventListener('click', () => {
-                    const sidebar = document.getElementById('sidebar');
-                    const overlay = document.getElementById('sidebarOverlay');
-                    sidebar.classList.toggle('-translate-x-full');
-                    overlay.classList.toggle('hidden');
-                });
-
-                document.getElementById('sidebarOverlay').addEventListener('click', () => {
-                    document.getElementById('sidebar').classList.add('-translate-x-full');
-                    document.getElementById('sidebarOverlay').classList.add('hidden');
-                });
-
-                // File upload
-                document.getElementById('fileUpload').addEventListener('change', (e) => {
-                    this.handleFileUpload(e.target.files);
-                });
-
-                // Send message
-                document.getElementById('sendBtn').addEventListener('click', () => this.sendMessage());
+                // Sidebar
+                document.getElementById('openSidebar').addEventListener('click', () => this.toggleSidebar());
+                document.getElementById('closeSidebar').addEventListener('click', () => this.toggleSidebar());
+                
+                // Chat controls
                 document.getElementById('messageInput').addEventListener('keypress', (e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
                         this.sendMessage();
                     }
                 });
-
+                document.getElementById('sendButton').addEventListener('click', () => this.sendMessage());
+                
                 // Control button
-                document.getElementById('controlBtn').addEventListener('click', () => this.toggleAI());
-
-                // Admin login
-                document.getElementById('adminLoginBtn').addEventListener('click', () => this.adminLogin());
-
-                // New chat
-                document.getElementById('newChatBtn').addEventListener('click', () => this.newChat());
-
-                // Auto-resize textarea
-                document.getElementById('messageInput').addEventListener('input', this.autoResize);
-
-                // Admin modal close
-                document.getElementById('closeAdmin').addEventListener('click', () => {
-                    document.getElementById('adminVault').classList.add('hidden');
-                });
-
-                // Tab switching
-              document.querySelectorAll('[data-tab]').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-                        document.querySelectorAll('[data-tab]').forEach(b => b.classList.remove('border-orange-border', 'bg-orange-500/20'));
-                        e.target.classList.add('border-orange-border', 'bg-orange-500/20');
-                        document.getElementById(`tab-${e.target.dataset.tab}`).classList.remove('hidden');
-                    });
-                });
-            }
-
-            autoResize() {
-                this.style.height = 'auto';
-                this.style.height = this.scrollHeight + 'px';
-            }
-
-            async sendMessage() {
-                const input = document.getElementById('messageInput');
-                const message = input.value.trim();
-                if (!message || this.isProcessing) return;
-
-                // Add user message
-                this.addMessage('user', message);
-                input.value = '';
-
-                // Start AI processing
-                await this.processMessage(message);
-            }
-
-            async processMessage(message) {
-                this.setStatus('processing', 'T John đang tạo...');
-                this.isProcessing = true;
-
-                try {
-                    // Simulate AI thinking with intent detection
-                    const response = await this.detectIntentAndExecute(message);
-                    
-                    // Add AI response
-                    this.addMessage('ai', response);
-                    
-                    this.setStatus('success', 'T John đã tạo xong');
-                } catch (error) {
-                    this.addMessage('ai', `❌ Lỗi: ${error.message}. T John đang tự sửa...`);
-                    this.selfHealing();
-                } finally {
-                    this.isProcessing = false;
-                    setTimeout(() => this.setStatus('idle'), 3000);
-                }
-            }
-
-            async detectIntentAndExecute(message) {
-                const lowerMessage = message.toLowerCase();
-
-                if (lowerMessage.includes('tạo ảnh') || lowerMessage.includes('tạo hình')) {
-                    return await this.generateImage(message);
-                } else if (lowerMessage.includes('tạo code') || lowerMessage.includes('viết code')) {
-                    return await this.generateCode(message);
-                } else if (lowerMessage.includes('tạo video')) {
-                    return await this.generateVideo(message);
-                  } else if (lowerMessage.includes('tìm') || lowerMessage.includes('tra')) {
-                    return await this.webSearch(message);
-                } else {
-                    // General AI response
-                    return await this.generalAIResponse(message);
-                }
-            }
-
-            async generateImage(prompt) {
-                // Simulate Pollinations.ai API call
-                await this.sleep(2000);
+                document.getElementById('controlButton').addEventListener('click', () => this.toggleProcessing());
                 
-                const imageHtml = `
-                    <div class="w-full aspect-square bg-gradient-to-br from-purple-900 to-pink-900 rounded-2xl border-4 border-orange-border shadow-2xl animate-pulse mb-4 flex items-center justify-center">
-                        <div class="text-center p-8">
-                            <div class="w-24 h-24 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto mb-4 animate-spin flex items-center justify-center">
-                                <span class="text-2xl">🖼️</span>
-                            </div>
-                            <p class="font-bold text-lg mb-2">Ảnh được tạo từ: "${prompt}"</p>
-                            <p class="text-sm text-gray-400">Pollinations.ai / Stable Diffusion</p>
-                            <button class="mt-4 px-6 py-2 bg-green-500 hover:bg-green-600 rounded-xl font-bold transition-all duration-300">
-                                💾 Tải ảnh
-                            </button>
-                        </div>
-                    </div>
-                    <p>✅ T John đã tạo ảnh nghệ thuật từ yêu cầu của bạn. Hình ảnh được tạo bằng Pollinations.ai API với chất lượng cao.</p>
-                `;
+                // File upload
+                document.querySelector('#fileUpload input').addEventListener('change', (e) => this.handleFileUpload(e));
                 
-                this.runSandbox('image_viewer.html', imageHtml);
-                return imageHtml + '<br><p>🎨 Sẵn sàng tạo thêm ảnh khác!</p>';
-            }
-
-            async generateCode(request) {
-                await this.sleep(3000);
+                // Admin modal
+                document.getElementById('adminMode').addEventListener('click', () => this.showAdminModal());
+                document.getElementById('closeAdminModal').addEventListener('click', () => this.hideAdminModal());
+                document.getElementById('submitAdminCode').addEventListener('click', () => this.verifyAdminCode());
                 
-                const code = `
-<!DOCTYPE html>
-<html>
-<head>
-    <title>${request} - Tạo bởi T John AI</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-br from-gray-900 to-black min-h-screen text-white p-8">
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-4xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-500">
-            ${request}
-        </h1>
-        <div class="bg-black/50 border-2 border-orange-400 rounded-2xl p-8 backdrop-blur-xl">
-            <p class="text-xl mb-8">Đây là ứng dụng hoàn chỉnh được T John AI tạo ra theo yêu cầu của bạn!</p>
-            <div class="grid md:grid-cols-2 gap-6">
-                <button class="p-6 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 rounded-xl font-bold shadow-2xl hover:shadow-orange-500/50 transition-all duration-300">
-                  🚀 Chạy ngay
-                </button>
-                <button class="p-6 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-xl font-bold shadow-2xl transition-all duration-300">
-                    💾 Tải mã nguồn
-                </button>
-            </div>
-        </div>
-    </div>
-</body>
-</html>`;
-                
-                this.runSandbox('code_app.html', code);
-                return `
-                    <div class="mb-6 p-4 bg-green-500/20 border-2 border-green-500 rounded-xl">
-                        <h4 class="font-bold text-lg mb-2">✅ Code hoàn chỉnh đã được tạo!</h4>
-                        <p>📱 Instant Sandbox đã mở ứng dụng. Nhấn F12 để xem console và debug.</p>
-                    </div>
-                    <details class="bg-black/50 border-2 border-orange-border rounded-xl p-4">
-                        <summary class="font-bold cursor-pointer p-2 hover:bg-orange-500/20 rounded-lg">👁️ Xem mã nguồn đầy đủ</summary>
-                        <pre class="mt-4 p-4 bg-black/80 border rounded-lg overflow-auto text-xs font-mono text-green-400 max-h-96">${code}</pre>
-                    </details>
-                    <p>💻 Code được tối ưu 100%, không placeholder, self-healing enabled. Sẵn sàng deploy production!</p>
-                `;
+                // Other buttons
+                document.getElementById('newChat').addEventListener('click', () => this.newChat());
+                document.getElementById('closeSandbox').addEventListener('click', () => this.closeSandbox());
             }
 
-            async generateVideo(prompt) {
-                await this.sleep(4000);
-                return `
-                    <div class="w-full aspect-video bg-gradient-to-br from-purple-900 via-pink-900 to-red-900 rounded-3xl border-4 border-orange-border shadow-2xl flex flex-col items-center justify-center p-8 mb-6">
-                        <div class="w-32 h-32 bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500 rounded-2xl flex items-center justify-center mb-6 animate-bounce">
-                            <span class="text-4xl">🎥</span>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-4 text-white drop-shadow-2xl">Video: ${prompt}</h3>
-                        <p class="text-lg text-orange-300 mb-6">Text-to-Video Model (Mã nguồn mở)</p>
-                        <div class="flex space-x-4">
-                            <button class="px-8 py-3 bg-green-500 hover:bg-green-600 rounded-2xl font-bold shadow-lg hover:shadow-orange-500/50 transition-all duration-300">▶️ Xem Video</button>
-                            <button class="px-8 py-3 bg-purple-500 hover:bg-purple-600 rounded-2xl font-bold shadow-lg transition-all duration-300">💾 Tải Video</button>
-                        </div>
-                    </div>
-                    <p>🎬 T John đã tạo video chất lượng cao từ text prompt. Hỗ trợ đầy đủ Text-to-Video pipeline mã nguồn mở.</p>
-                `;
+            toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                sidebar.classList.toggle('-translate-x-full');
             }
 
-            async webSearch(query) {
-                await this.sleep(1500);
-return `
-                    <div class="grid md:grid-cols-2 gap-6 mb-6">
-                        <div class="bg-black/60 border-2 border-orange-border rounded-2xl p-6 hover:bg-orange-500/10 transition-all duration-300">
-                            <h4 class="font-bold text-xl mb-3">🔍 Kết quả tìm kiếm "${query}"</h4>
-                            <div class="space-y-3">
-                                <a href="#" class="block p-3 bg-gray-900/50 rounded-xl hover:bg-orange-500/30 transition-all duration-300">
-                                    <h5 class="font-bold">T John AI Official</h5>
-                                    <p class="text-sm text-gray-400">Trang chính thức - Cập nhật mới nhất</p>
-                                </a>
-                                <a href="#" class="block p-3 bg-gray-900/50 rounded-xl hover:bg-orange-500/30 transition-all duration-300">
-                                    <h5 class="font-bold">GitHub Repository</h5>
-                                    <p class="text-sm text-gray-400">Mã nguồn mở T John AI</p>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="bg-black/60 border-2 border-orange-border rounded-2xl p-6 hover:bg-orange-500/10 transition-all duration-300">
-                            <h4 class="font-bold text-xl mb-3">🌐 Jina Reader Analysis</h4>
-                            <p class="text-lg mb-4">Đang phân tích realtime từ web...</p>
-                            <div class="space-y-2">
-                                <div class="w-full bg-gray-800 rounded-full h-3">
-                                    <div class="bg-neon-green h-3 rounded-full w-75% animate-pulse"></div>
-                                </div>
-                                <p class="text-sm text-gray-400">Real-time web scraping & analysis</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p>🔥 T John đã thu thập thông tin realtime từ web và social media. Dữ liệu được cập nhật đến giây phút hiện tại (21/04/2026).</p>
-                `;
-            }
-
-            async generalAIResponse(message) {
-                await this.sleep(1000);
-                const responses = [
-                    `🤖 T John hiểu yêu cầu của bạn: "${message}". Hệ thống đã xử lý thành công với logic phức tạp tương đương OpenClaw.`,
-                    `✅ Phân tích hoàn tất. T John AI OS Version Full Power đã thực thi theo intent detection chính xác 100%.`,
-                    `🚀 Sức mạnh siêu việt: Context length ∞, reasoning chain hoàn hảo, zero hallucination.`
-                ];
-                return responses[Math.floor(Math.random() * responses.length)];
-            }
-
-            addMessage(sender, content) {
-                const container = document.getElementById('messagesContainer');
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'} mb-6`;
-                
-                const bubbleClass = sender === 'user' 
-                    ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white' 
-                    : 'bg-black/60 border border-orange-border backdrop-blur-xl';
-                
-                messageDiv.innerHTML = `
-<div class="max-w-3xl p-6 rounded-2xl ${bubbleClass} shadow-2xl ${sender === 'user' ? 'rounded-br-sm' : 'rounded-bl-sm'}">
-                        <div class="prose prose-invert max-w-none">${content}</div>
-                        <div class="text-xs text-gray-400 mt-3 font-mono">
-                            ${new Date().toLocaleString('vi-VN')} | ${sender === 'user' ? 'Bạn' : 'T John AI'}
-                        </div>
-                    </div>
-                `;
-                
-                container.appendChild(messageDiv);
-                container.scrollTop = container.scrollHeight;
-            }
-
-            setStatus(state, text) {
-                const statusBar = document.getElementById('statusBar');
-                const icon = document.getElementById('statusIcon');
-                const textEl = document.getElementById('statusText');
-                
-                if (state === 'idle') {
-                    statusBar.classList.add('hidden');
-                    return;
-                }
-                
-                statusBar.classList.remove('hidden');
-                textEl.textContent = text;
-                
-                if (state === 'processing') {
-                    icon.className = 'w-5 h-5 border-2 border-white rounded-full rotate-spin';
-                } else {
-                    icon.className = 'w-5 h-5 bg-green-500 border-2 border-green-600 rounded-full flex items-center justify-center';
-                    icon.innerHTML = '✓';
-                }
-            }
-
-            toggleAI() {
-                if (this.isProcessing) {
-                    this.abortAI();
-                } else {
-                    this.resumeAI();
-                }
-            }
-
-            abortAI() {
-                this.isProcessing = false;
-                document.getElementById('controlIcon').textContent = '▶️';
-                document.getElementById('controlBtn').className = 'w-14 h-14 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 border-3 border-white rounded-2xl flex items-center justify-center shadow-2xl transition-all duration-300 font-bold text-xl shadow-green-500/50';
-                this.setStatus('idle');
-            }
-
-            resumeAI() {
-                document.getElementById('controlIcon').textContent = '⏹️';
-                document.getElementById('controlBtn').className = 'w-14 h-14 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 border-3 border-white rounded-2xl flex items-center justify-center shadow-2xl transition-all duration-300 font-bold text-xl shadow-orange-500/50';
-            }
-
-            async adminLogin() {
-                const code = document.getElementById('adminCode').value;
-const validCode = 'ADMIN_T.JOHN.AI_Q.Thuan:7329000';
-                
-                if (code === validCode) {
-                    // Log success
-                    await this.logSystem('Admin Login SUCCESS', 'green');
-                    
-                    // Store session (never in localStorage)
-                    sessionStorage.setItem('admin_authenticated', 'true');
-                    
-                    document.getElementById('adminVault').classList.remove('hidden');
-                    document.getElementById('sidebar').classList.add('-translate-x-full');
-                    document.getElementById('sidebarOverlay').classList.add('hidden');
-                } else {
-                    await this.logSystem('Admin Login FAILED - Invalid code', 'red');
-                    alert('❌ Mã ADMIN không chính xác!');
-                }
-            }
-
-            async handleFileUpload(files) {
-                for (let file of Array.from(files)) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        this.addMessage('system', `📎 Đã tải file: ${file.name}<br><small>Loại: ${file.type} | Kích thước: ${(file.size/1024).toFixed(1)}KB</small>`);
-                        // Process file based on type
-                        this.processFile(file, e.target.result);
-                    };
-                    if (file.type.startsWith('text/') || file.name.endsWith('.txt')) {
-                        reader.readAsText(file);
-                    } else if (file.type.startsWith('image/')) {
-                        reader.readAsDataURL(file);
-                    } else {
-                        reader.readAsArrayBuffer(file);
-                    }
-                }
-            }
-
-            processFile(file, content) {
-                // Simulate file processing
-                if (file.type.startsWith('image/')) {
-                    this.addMessage('ai', '🖼️ T John đã phân tích hình ảnh. Nhận diện: AI-generated artwork, high quality.');
-                } else if (file.name.endsWith('.pdf')) {
-                    this.addMessage('ai', '📄 T John đã đọc PDF. Extracted 1247 từ, 8 trang, chủ đề: Machine Learning.');
-                }
-            }
-
-            runSandbox(filename, content = '') {
-                const sandbox = document.getElementById('sandboxContainer');
-                const iframe = document.getElementById('sandboxFrame');
-                
-                sandbox.classList.remove('hidden');
-                
-                const sandboxDoc = iframe.contentDocument || iframe.contentWindow.document;
-                sandboxDoc.open();
-                sandboxDoc.write(content || `<html><body style="margin:0;background:black;color:white;font-family:sans-serif;padding:20px;">Sandbox: ${filename}</body></html>`);
-sandboxDoc.close();
-            }
-
-            async selfHealing() {
-                // Monitor console errors and auto-fix
-                const originalError = console.error;
-                console.error = (...args) => {
-                    originalError.apply(console, args);
-                    // Auto-fix common errors
-                    this.addMessage('system', '🔧 T John phát hiện lỗi console. Self-healing đang thực hiện...');
-                };
-            }
-
-            async logSystem(message, color = 'gray') {
-                const log = {
-                    id: Date.now(),
-                    message,
-                    timestamp: new Date().toISOString(),
-                    color
-                };
-                
-                const tx = this.db.transaction('logs', 'readwrite');
-                const store = tx.objectStore('logs');
-                store.add(log);
-                
-                // Update UI log
-                const logDiv = document.createElement('div');
-                logDiv.className = `text-${color}-400 px-2 py-1 rounded`;
-                logDiv.textContent = `[${new Date().toLocaleString('vi-VN')}] ${message}`;
-                const logContent = document.getElementById('logContent');
-                logContent.insertBefore(logDiv, logContent.firstChild);
-            }
-
-            async githubSync() {
-                // Simulate GitHub sync using stored token (NEVER localStorage)
-                await this.logSystem('GitHub Auto-sync: 17 files committed', 'blue');
-            }
-
-            async newChat() {
-                this.currentChatId = 'chat_' + Date.now();
-                document.getElementById('messagesContainer').innerHTML = `
-                    <div class="w-full text-center py-8 text-gray-400">
-                        <div class="w-24 h-24 border-2 border-dashed border-gray-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-                            <span class="text-2xl">💬</span>
-                        </div>
-                        <p>Chat mới đã được tạo!</p>
-                    </div>
-                `;
-                await this.logSystem('New chat created', 'green');
-            }
-
-            async loadChatHistory() {
-                const tx = this.db.transaction('chats', 'readonly');
-                const store = tx.objectStore('chats');
-                const chats = await store.getAll();
-                
-                const chatList = document.getElementById('chatList');
-                chatList.innerHTML = chats.map(chat => 
-                    `<option>${chat.title} - ${new Date(chat.timestamp).toLocaleDateString('vi-VN')}</option>`
-                ).join('');
-}
-
-            sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
-        }
-
-        // Initialize T John AI when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            window.tjohn = new TJohnAI();
-            
-            // Prevent context menu on sensitive areas
-            document.addEventListener('contextmenu', e => {
-                if (e.target.closest('#adminVault') || e.target.closest('#sandboxContainer')) {
-                    e.preventDefault();
-                }
-            });
-        });
-
-        // Service Worker for PWA (optional)
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js');
-        }
-    </script>
-</body>
-</html>
-
-      
+            async
